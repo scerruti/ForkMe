@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="fx-gson:main" external.linked.project.path="$USER_HOME$/IdeaProjects/fx-gson" external.root.project.path="$USER_HOME$/IdeaProjects/fx-gson" external.system.id="GRADLE" external.system.module.group="org.hildan.fxgson" external.system.module.type="sourceSet" external.system.module.version="1.2.3" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
+    <output url="file://$USER_HOME$/IdeaProjects/fx-gson/build/classes/main" />
+    <exclude-output />
+    <content url="file://$USER_HOME$/IdeaProjects/fx-gson/src/main">
+      <sourceFolder url="file://$USER_HOME$/IdeaProjects/fx-gson/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/IdeaProjects/fx-gson/src/main/resources" type="java-resource" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.7" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:15.0" level="project" />
+  </component>
+</module>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="fx-gson:test" external.linked.project.path="$USER_HOME$/IdeaProjects/fx-gson" external.root.project.path="$USER_HOME$/IdeaProjects/fx-gson" external.system.id="GRADLE" external.system.module.group="org.hildan.fxgson" external.system.module.type="sourceSet" external.system.module.version="1.2.3" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
+    <output-test url="file://$USER_HOME$/IdeaProjects/fx-gson/build/classes/test" />
+    <exclude-output />
+    <content url="file://$USER_HOME$/IdeaProjects/fx-gson/src/test">
+      <sourceFolder url="file://$USER_HOME$/IdeaProjects/fx-gson/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$USER_HOME$/IdeaProjects/fx-gson/src/test/resources" type="java-test-resource" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="fx-gson_main" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.7" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:15.0" level="project" />
+    <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
+    <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
+  </component>
+  <component name="TestModuleProperties" production-module="fx-gson_main" />
+</module>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="fx-gson" external.linked.project.path="$USER_HOME$/IdeaProjects/fx-gson" external.root.project.path="$USER_HOME$/IdeaProjects/fx-gson" external.system.id="GRADLE" external.system.module.group="org.hildan.fxgson" external.system.module.version="1.2.3" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$USER_HOME$/IdeaProjects/fx-gson">
+      <excludeFolder url="file://$USER_HOME$/IdeaProjects/fx-gson/.gradle" />
+      <excludeFolder url="file://$USER_HOME$/IdeaProjects/fx-gson/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
