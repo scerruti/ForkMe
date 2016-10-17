@@ -2,9 +2,12 @@ package org.jointheleague.forkme.view;/*
  * Copyright 2016, The League of Amazing Programmers, All Rights Reserved
  */
 
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
 import org.jointheleague.forkme.controller.AccountBoxController;
+import org.jointheleague.forkme.controller.ForkMeController;
+import org.jointheleague.forkme.controller.UserListController;
 import org.jointheleague.forkme.model.PersistentUser;
 
 import java.io.IOException;
@@ -35,11 +38,31 @@ public class AccountBox extends VBox {
         return controller.getUser();
     }
 
+    public void setUser(PersistentUser user) {
+        Platform.runLater(() -> controller.setUser(user));
+    }
+
     public void showLoginControls() {
         controller.setLoginButtonsVisible(true);
     }
 
     public void hideActionControls() {
-        controller.setActionButtonsVisible(false);
+        controller.hideActionControls();
+    }
+
+    public void setUserList(UserListController userListController) {
+        controller.setUserList(userListController);
+    }
+
+    public void setActionControlsVisible(boolean visible) {
+        controller.setActionButtonsVisible(visible);
+    }
+
+    public void setActionButtonText(String buttonText) {
+        controller.setActionButtonText(buttonText);
+    }
+
+    public void setMainController(ForkMeController forkMeController) {
+        controller.setMainController(forkMeController);
     }
 }

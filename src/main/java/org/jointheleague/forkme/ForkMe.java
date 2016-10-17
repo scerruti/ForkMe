@@ -4,16 +4,11 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.eclipse.egit.github.core.client.RequestException;
 import org.jointheleague.forkme.controller.UserListController;
 import org.jointheleague.forkme.model.Account;
 import org.jointheleague.forkme.model.JsonUser;
@@ -27,12 +22,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ForkMe extends Application {
-    private static final Logger logger = LoggerFactory.getLogger(ForkMe.class);
     public static final String APPLICATION_NAME = "forkMe";
-
-    private static ForkMe instance;
+    private static final Logger logger = LoggerFactory.getLogger(ForkMe.class);
     public static ObjectProperty<PersistentUser> currentAccount = new SimpleObjectProperty<>();
-
+    private static ForkMe instance;
     private List<Account> accounts;
     private ResourceBundle resources;
     private Stage primaryStage;
@@ -45,6 +38,14 @@ public class ForkMe extends Application {
 
     public static void setCurrentAccount(PersistentUser currentAccount) {
         ForkMe.currentAccount.setValue(currentAccount);
+    }
+
+    public static ResourceBundle getResources() {
+        return instance.getInstanceResources();
+    }
+
+    public static void logoff() {
+        currentAccount.setValue(null);
     }
 
     @Override
@@ -80,15 +81,7 @@ public class ForkMe extends Application {
         return pane;
     }
 
-    public static ResourceBundle getResources() {
-        return instance.getInstanceResources();
-    }
-
     private ResourceBundle getInstanceResources() {
         return resources;
     }
-
-
-
-
 }

@@ -4,20 +4,19 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.TilePane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
-<fx:root alignment="CENTER" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8.0.102-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.jointheleague.forkme.controller.AccountBoxController">
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" type="javafx.scene.layout.VBox"
+         xmlns="http://javafx.com/javafx/8.0.102-ea"
+         fx:controller="org.jointheleague.forkme.controller.AccountBoxController">
     <ImageView fx:id="avatar" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../../../../Pictures/student-silhouette.png" />
+        <Image url="@student-silhouette.png"/>
     </ImageView>
     <Text fx:id="name">
       <font>
          <Font size="10.0" />
       </font></Text>
-    <VBox fx:id="loginPane" alignment="TOP_CENTER" maxWidth="100" visible="false">
+    <VBox fx:id="loginPane" alignment="TOP_CENTER" maxWidth="100" managed="false" visible="false">
         <PasswordField fx:id="passwordField" promptText="%password.prompt">
          <font>
             <Font size="6.0" />
@@ -27,19 +26,19 @@
             <Font size="6.0" />
          </font></Text>
         <TilePane alignment="CENTER">
-            <Button fx:id="cancelButton" cancelButton="true" onAction="#cancelAction" text="%cancel.button.text">
+            <Button cancelButton="true" onAction="#cancelAction" text="%cancel.button.text">
             <font>
                <Font size="10.0" />
             </font></Button>
-            <Button fx:id="loginButton" defaultButton="true" onAction="#loginAction" text="%login.button.text">
+            <Button defaultButton="true" onAction="#loginAction" text="%login.button.text">
             <font>
                <Font size="10.0" />
             </font></Button>
         </TilePane>
     </VBox>
-    <VBox fx:id="actionPane" alignment="TOP_CENTER" maxWidth="100">
+    <VBox fx:id="actionPane" alignment="TOP_CENTER" maxWidth="100" managed="false" visible="false">
         <TilePane alignment="CENTER">
-            <Button fx:id="actionButton" onAction="#doAction" text="%logoff.button.text">
+            <Button fx:id="loginButton" onAction="#doAction" text="%logoff.button.text">
                 <font>
                     <Font size="10.0" />
                 </font></Button>
