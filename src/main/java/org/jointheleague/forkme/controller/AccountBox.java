@@ -2,6 +2,7 @@ package org.jointheleague.forkme.controller;/*
  * Copyright 2016, The League of Amazing Programmers, All Rights Reserved
  */
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -51,7 +52,7 @@ public class AccountBox extends VBox {
 
     @FXML
     public void initialize() throws IOException {
-        name.setText(user.getName());
+        name.setText(user.getEffectiveName());
         Image image = new Image(Files.newInputStream(user.getAvatar()));
         avatar.setImage(image);
     }
@@ -62,5 +63,15 @@ public class AccountBox extends VBox {
 
     public void setButtonsVisible(boolean buttonsVisible) {
         actionPane.setVisible(buttonsVisible);
+    }
+
+    @FXML
+    private void loginAction(ActionEvent actionEvent) {
+
+    }
+
+    @FXML
+    private void cancelAction(ActionEvent actionEvent) {
+
     }
 }

@@ -123,4 +123,8 @@ public class PersistentUser {
     public static PersistentUser getAccount(String login) {
         return accountList.get(login);
     }
+
+    public String getEffectiveName() {
+        return (name.get() != null && !name.get().isEmpty()?name.get():login.get());
+    }
 }

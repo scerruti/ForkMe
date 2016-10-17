@@ -60,7 +60,7 @@ public class ForkMe {
                 }
 
                 org.jointheleague.forkme.ForkMe.currentAccount.setValue(PersistentUser.getAccount(username.getText()));
-                loginButton.getScene().setCursor(Cursor.DEFAULT); //Change cursor to wait style
+                loginButton.getScene().setCursor(Cursor.DEFAULT); //Change cursor to default style
             }
         });
     }

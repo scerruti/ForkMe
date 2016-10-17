@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.102-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.jointheleague.forkme.controller.ForkMe">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.jointheleague.forkme.controller.ForkMe">
     <top>
               <HBox>
                   <children>
@@ -25,7 +25,7 @@
                               <TextField fx:id="username" promptText="%username.prompt" />
                               <PasswordField fx:id="password" promptText="%password.prompt" />
                               <Text fx:id="loginError" fill="red" strokeType="OUTSIDE" strokeWidth="0.0" />
-                              <Button fx:id="loginButton" mnemonicParsing="false" onAction="#login" text="%login.button.text" />
+                              <Button fx:id="loginButton" defaultButton="true" mnemonicParsing="false" onAction="#login" text="%login.button.text" />
                           </children>
                   <padding>
                      <Insets top="40.0" />
