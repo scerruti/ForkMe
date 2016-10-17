@@ -9,7 +9,6 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
 import org.eclipse.egit.github.core.client.RequestException;
 import org.jointheleague.forkme.model.Account;
@@ -18,10 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ResourceBundle;
 
-public class ForkMe {
-    private static final Logger logger = LoggerFactory.getLogger(ForkMe.class);
+public class ForkMeController {
+    private static final Logger logger = LoggerFactory.getLogger(ForkMeController.class);
     private static final String LOGIN_ERROR = "login.error";
 
     @FXML

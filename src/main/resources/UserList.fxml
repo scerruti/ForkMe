@@ -11,7 +11,8 @@
           <FlowPane fx:id="userPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
       </children>
    </AnchorPane>
-   <AnchorPane fx:id="loginAnchorPane" style="-fx-background-color: rgba(0,0,0,.25)" visible="false">
+   <!--style="-fx-background-color: rgba(0,0,0,.25)"-->
+   <AnchorPane fx:id="loginAnchorPane"  visible="false">
       <children>
          <Pane fx:id="loginAccountPane" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
       </children>

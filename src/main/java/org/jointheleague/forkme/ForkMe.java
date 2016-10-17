@@ -4,13 +4,17 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.jointheleague.forkme.controller.UserList;
+import org.eclipse.egit.github.core.client.RequestException;
+import org.jointheleague.forkme.controller.UserListController;
 import org.jointheleague.forkme.model.Account;
 import org.jointheleague.forkme.model.JsonUser;
 import org.jointheleague.forkme.model.PersistentUser;
@@ -25,6 +29,7 @@ import java.util.ResourceBundle;
 public class ForkMe extends Application {
     private static final Logger logger = LoggerFactory.getLogger(ForkMe.class);
     public static final String APPLICATION_NAME = "forkMe";
+
     private static ForkMe instance;
     public static ObjectProperty<PersistentUser> currentAccount = new SimpleObjectProperty<>();
 
@@ -36,6 +41,10 @@ public class ForkMe extends Application {
         JsonUser.loadAccounts();
 
         launch(args);
+    }
+
+    public static void setCurrentAccount(PersistentUser currentAccount) {
+        ForkMe.currentAccount.setValue(currentAccount);
     }
 
     @Override
@@ -52,7 +61,7 @@ public class ForkMe extends Application {
             System.exit(0);
         }
 
-        loginPane.setCenter(new UserList(PersistentUser.accounts));
+        loginPane.setCenter(new UserListController(PersistentUser.accounts));
 
         primaryStage.setOnCloseRequest(event -> Platform.exit());
         primaryStage.setTitle(resources.getString("title"));
@@ -78,5 +87,8 @@ public class ForkMe extends Application {
     private ResourceBundle getInstanceResources() {
         return resources;
     }
+
+
+
 
 }

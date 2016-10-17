@@ -26,27 +26,40 @@ public class PersistentUser {
     private static int accountListSize;
     private StringProperty login;
     private StringProperty name;
+    private StringProperty effectiveName;
     private ObjectProperty<Path> avatar;
     private Calendar lastLogin;
 
-    private PersistentUser(Account account) {
-        this.login = new SimpleStringProperty(account.getLogin());
-        this.name = new SimpleStringProperty(account.getName());
-        Path imageFile = null;
-        try {
-            imageFile = account.getImageFile(account.getAvatarUrl());
-        } catch (IOException e) {
-            logger.warn("Unable to get image file for avatar.", e);
-        }
-        this.avatar = new SimpleObjectProperty<>(imageFile);
-        this.lastLogin = Calendar.getInstance();
+    private PersistentUser(Account account) throws IOException {
+        this(
+                account.getLogin(),
+                account.getName(),
+                account.getImageFile(account.getAvatarUrl()),
+                Calendar.getInstance()
+        );
     }
 
     public PersistentUser(JsonUser user) {
-        this.login = new SimpleStringProperty(user.getLogin());
-        this.name = new SimpleStringProperty(user.getName());
-        this.avatar = new SimpleObjectProperty<>(user.getAvatar());
-        this.lastLogin = user.getLastLogin();
+        this(
+                user.getLogin(),
+                user.getName(),
+                user.getAvatar(),
+                user.getLastLogin());
+    }
+
+    public PersistentUser(String login, String name, Path avatar, Calendar lastLogin) {
+        this.login = new SimpleStringProperty(login);
+        this.name = new SimpleStringProperty(name);
+
+        this.effectiveName = new SimpleStringProperty();
+        if (name == null || name.isEmpty()) {
+            this.effectiveName.bind(this.login);
+        } else {
+            this.effectiveName.bind(this.name);
+        }
+
+        this.avatar = new SimpleObjectProperty<>(avatar);
+        this.lastLogin = lastLogin;
     }
 
     public static int getAccountListSize() {
@@ -60,8 +73,13 @@ public class PersistentUser {
     public static void updateAccount(Account account) {
         PersistentUser existing = accountList.get(account.getLogin());
         if (existing == null) {
-            PersistentUser newAccount = new PersistentUser(account);
-            accountList.put(account.getLogin(), newAccount);
+            PersistentUser newAccount = null;
+            try {
+                newAccount = new PersistentUser(account);
+                accountList.put(account.getLogin(), newAccount);
+            } catch (IOException e) {
+                logger.error("User image error:",e);
+            }
         } else {
             existing.update(account);
         }
@@ -124,7 +142,8 @@ public class PersistentUser {
         return accountList.get(login);
     }
 
-    public String getEffectiveName() {
-        return (name.get() != null && !name.get().isEmpty()?name.get():login.get());
+    public StringProperty effectiveNameProperty() {
+        return effectiveName;
     }
+
 }

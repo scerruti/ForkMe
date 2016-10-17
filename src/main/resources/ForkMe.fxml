@@ -10,36 +10,41 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.jointheleague.forkme.controller.ForkMe">
+<?import org.jointheleague.forkme.view.AccountBox?>
+<BorderPane xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.jointheleague.forkme.controller.ForkMeController">
     <top>
-              <HBox>
-                  <children>
-                      <StackPane alignment="CENTER_LEFT" minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                          <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%title" />
-                          </children>
-                      </StackPane>
-                      <StackPane minHeight="180.0" minWidth="240.0">
-                      <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="100.0">
-                          <children>
-                              <TextField fx:id="username" promptText="%username.prompt" />
-                              <PasswordField fx:id="password" promptText="%password.prompt" />
-                              <Text fx:id="loginError" fill="red" strokeType="OUTSIDE" strokeWidth="0.0" />
-                              <Button fx:id="loginButton" defaultButton="true" mnemonicParsing="false" onAction="#login" text="%login.button.text" />
-                          </children>
-                  <padding>
-                     <Insets top="40.0" />
-                  </padding>
-                      </VBox>
-               <padding>
-                  <Insets left="10.0" right="10.0" />
-               </padding>
-                      </StackPane>
-                  </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-              </HBox>
+        <HBox>
+            <children>
+                <StackPane alignment="CENTER_LEFT" minHeight="200.0" minWidth="200.0" prefHeight="200.0"
+                           prefWidth="200.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%title"/>
+                    </children>
+                </StackPane>
+                <StackPane minHeight="180.0" minWidth="240.0">
+                    <AccountBox />
+                    <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="100.0" visible="false">
+                        <children>
+                            <TextField fx:id="username" promptText="%username.prompt"/>
+                            <PasswordField fx:id="password" promptText="%password.prompt"/>
+                            <Text fx:id="loginError" fill="red" strokeType="OUTSIDE" strokeWidth="0.0"/>
+                            <Button fx:id="loginButton" defaultButton="true" mnemonicParsing="false" onAction="#login"
+                                    text="%login.button.text"/>
+                        </children>
+                        <padding>
+                            <Insets top="40.0"/>
+                        </padding>
+                    </VBox>
+                    <padding>
+                        <Insets left="10.0" right="10.0"/>
+                    </padding>
+                </StackPane>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+        </HBox>
 
     </top>
 </BorderPane>
