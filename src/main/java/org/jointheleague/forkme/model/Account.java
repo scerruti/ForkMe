@@ -120,4 +120,8 @@ public class Account {
             return null;
         }
     }
+
+    public GitHubClient getClient() {
+        return client;
+    }
 }

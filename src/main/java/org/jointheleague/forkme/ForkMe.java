@@ -24,8 +24,9 @@ import java.util.ResourceBundle;
 public class ForkMe extends Application {
     public static final String APPLICATION_NAME = "forkMe";
     private static final Logger logger = LoggerFactory.getLogger(ForkMe.class);
-    public static ObjectProperty<PersistentUser> currentAccount = new SimpleObjectProperty<>();
+    public static ObjectProperty<PersistentUser> currentUser = new SimpleObjectProperty<>();
     private static ForkMe instance;
+    private static Account currentAccount;
     private List<Account> accounts;
     private ResourceBundle resources;
     private Stage primaryStage;
@@ -36,8 +37,8 @@ public class ForkMe extends Application {
         launch(args);
     }
 
-    public static void setCurrentAccount(PersistentUser currentAccount) {
-        ForkMe.currentAccount.setValue(currentAccount);
+    public static void setCurrentUser(PersistentUser currentAccount) {
+        ForkMe.currentUser.setValue(currentAccount);
     }
 
     public static ResourceBundle getResources() {
@@ -45,8 +46,21 @@ public class ForkMe extends Application {
     }
 
     public static void logoff() {
-        currentAccount.setValue(null);
+        currentUser.setValue(null);
     }
+
+    public static void setCurrentUser(Account currentUser) {
+        ForkMe.currentAccount = currentUser;
+    }
+
+    public static Account getCurrentAccount() {
+        return currentAccount;
+    }
+
+    public static void setCurrentAccount(Account currentAccount) {
+        ForkMe.currentAccount = currentAccount;
+    }
+
 
     @Override
     public void start(Stage primaryStage) {

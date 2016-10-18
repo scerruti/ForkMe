@@ -40,11 +40,11 @@ public class ForkMeController {
 
    @FXML
     public void initialize() {
-       currentAccountBox.setUser(ForkMe.currentAccount.getValue());
+       currentAccountBox.setUser(ForkMe.currentUser.getValue());
        currentAccountBox.setActionButtonText(ForkMe.getResources().getString(LOGIN_TEXT));
        currentAccountBox.setActionControlsVisible(true);
        currentAccountBox.setMainController(this);
-       ForkMe.currentAccount.addListener((observable, oldValue, newValue) -> {
+       ForkMe.currentUser.addListener((observable, oldValue, newValue) -> {
            currentAccountBox.setUser(newValue);
            loginPrompt.setVisible(false);
            currentAccountBox.setDisable(false);
