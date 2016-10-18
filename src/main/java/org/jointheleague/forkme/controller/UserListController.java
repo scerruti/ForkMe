@@ -6,6 +6,9 @@ import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +17,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import org.jointheleague.forkme.ForkMe;
 import org.jointheleague.forkme.model.PersistentUser;
 import org.jointheleague.forkme.view.AccountBox;
 
@@ -40,12 +44,20 @@ public class UserListController extends StackPane {
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
-
         try {
             fxmlLoader.load();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+
+        ForkMe.currentUser.addListener(new ChangeListener<PersistentUser>() {
+            @Override
+            public void changed(ObservableValue<? extends PersistentUser> observable, PersistentUser oldValue, PersistentUser newValue) {
+                if (newValue == null) {
+                    Platform.runLater(() -> ForkMe.show(UserListController.this));
+                }
+            }
+        });
     }
 
     @FXML

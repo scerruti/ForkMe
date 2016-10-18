@@ -8,11 +8,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.jointheleague.forkme.controller.RepoController;
 import org.jointheleague.forkme.controller.UserListController;
 import org.jointheleague.forkme.model.Account;
 import org.jointheleague.forkme.model.JsonUser;
 import org.jointheleague.forkme.model.PersistentUser;
+import org.jointheleague.forkme.model.Repo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,11 +28,16 @@ public class ForkMe extends Application {
     public static final String APPLICATION_NAME = "forkMe";
     private static final Logger logger = LoggerFactory.getLogger(ForkMe.class);
     public static ObjectProperty<PersistentUser> currentUser = new SimpleObjectProperty<>();
+    public static ObjectProperty<Account> currentAccount = new SimpleObjectProperty<>();
     private static ForkMe instance;
-    private static Account currentAccount;
     private List<Account> accounts;
     private ResourceBundle resources;
     private Stage primaryStage;
+    private Repo repo = new Repo();
+    private StackPane centerPane;
+    private RepoController repoPane;
+    private UserListController userPane;
+    private BorderPane mainWindow;
 
     public static void main(String[] args) {
         JsonUser.loadAccounts();
@@ -37,8 +45,8 @@ public class ForkMe extends Application {
         launch(args);
     }
 
-    public static void setCurrentUser(PersistentUser currentAccount) {
-        ForkMe.currentUser.setValue(currentAccount);
+    public static void setCurrentUser(PersistentUser currentUser) {
+        ForkMe.currentUser.setValue(currentUser);
     }
 
     public static ResourceBundle getResources() {
@@ -47,20 +55,20 @@ public class ForkMe extends Application {
 
     public static void logoff() {
         currentUser.setValue(null);
+        currentAccount.setValue(null);
     }
 
-    public static void setCurrentUser(Account currentUser) {
-        ForkMe.currentAccount = currentUser;
+    public static void setCurrentUser(Account account) {
+        ForkMe.currentAccount.setValue(account);
     }
 
     public static Account getCurrentAccount() {
-        return currentAccount;
+        return currentAccount.get();
     }
 
-    public static void setCurrentAccount(Account currentAccount) {
-        ForkMe.currentAccount = currentAccount;
+    public static void show(Pane pane) {
+        instance.mainWindow.setCenter(pane);
     }
-
 
     @Override
     public void start(Stage primaryStage) {
@@ -68,15 +76,17 @@ public class ForkMe extends Application {
         this.primaryStage = primaryStage;
         resources = ResourceBundle.getBundle(APPLICATION_NAME);
 
-        BorderPane loginPane = null;
+        mainWindow = null;
         try {
-            loginPane = (BorderPane) getPane(resources, "/ForkMe.fxml");
+            mainWindow = (BorderPane) getPane(resources, "/ForkMe.fxml");
         } catch (IOException e) {
             logger.error("Can't load user interface.", e);
             System.exit(0);
         }
 
-        loginPane.setCenter(new UserListController(PersistentUser.accounts));
+        userPane = new UserListController(PersistentUser.accounts);
+        repoPane = new RepoController(repo);
+        mainWindow.setCenter(userPane);
 
         primaryStage.setOnCloseRequest(event -> Platform.exit());
         primaryStage.setTitle(resources.getString("title"));

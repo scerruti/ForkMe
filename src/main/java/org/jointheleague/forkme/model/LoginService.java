@@ -4,7 +4,6 @@ package org.jointheleague.forkme.model;/*
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import org.eclipse.egit.github.core.client.RequestException;
 import org.jointheleague.forkme.ForkMe;
 
 import java.io.IOException;
@@ -21,13 +20,12 @@ public class LoginService extends Service<Void> {
     protected Task<Void> createTask() {
 
         return new Task<Void>() {
-            protected Void call() throws IOException, RequestException {
+            protected Void call() throws IOException {
 
                 Account account = new Account(login, text);
                 account.login();
                 ForkMe.setCurrentUser(PersistentUser.getAccount(login));
                 ForkMe.setCurrentUser(account);
-                Repo repo = new Repo();
                 return null;
             }
         };
