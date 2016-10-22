@@ -7,12 +7,9 @@ import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -50,12 +47,9 @@ public class UserListController extends StackPane {
             throw new RuntimeException(exception);
         }
 
-        ForkMe.currentUser.addListener(new ChangeListener<PersistentUser>() {
-            @Override
-            public void changed(ObservableValue<? extends PersistentUser> observable, PersistentUser oldValue, PersistentUser newValue) {
-                if (newValue == null) {
-                    Platform.runLater(() -> ForkMe.show(UserListController.this));
-                }
+        ForkMe.currentUser.addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                Platform.runLater(() -> ForkMe.show(UserListController.this));
             }
         });
     }
@@ -84,6 +78,11 @@ public class UserListController extends StackPane {
                 fadeTransition.setFromValue(1.0);
                 fadeTransition.setToValue(.3);
 
+                FadeTransition fadeInAccountBox =
+                        new FadeTransition(Duration.millis(500), accountBox1);
+                fadeInAccountBox.setFromValue(0);
+                fadeInAccountBox.setToValue(1);
+
                 sourceX = source.getLayoutX();
 
                 TranslateTransition translateTransition =
@@ -95,10 +94,10 @@ public class UserListController extends StackPane {
                 scaleTransition.setToX(2f);
                 scaleTransition.setToY(2f);
 
-
                 ParallelTransition parallelTransition = new ParallelTransition();
                 parallelTransition.getChildren().addAll(
                         fadeTransition,
+                        fadeInAccountBox,
                         translateTransition,
                         scaleTransition
                 );
@@ -112,14 +111,15 @@ public class UserListController extends StackPane {
     }
 
     void hideAccountLogin() {
-        Pane pane = (Pane) displayedAccountBox.getScene().lookup("#loginAccountPane");
-        AnchorPane anchorPane = (AnchorPane) displayedAccountBox.getScene().lookup("#loginAnchorPane");
-        FlowPane userPane = (FlowPane) displayedAccountBox.getScene().lookup("#userPane");
-
-        FadeTransition fadeTransition =
+        FadeTransition fadeInUserPane =
                 new FadeTransition(Duration.millis(500), userPane);
-        fadeTransition.setFromValue(0.3);
-        fadeTransition.setToValue(1.0);
+        fadeInUserPane.setFromValue(0.3);
+        fadeInUserPane.setToValue(1.0);
+
+        FadeTransition fadeOutAccountBox =
+                new FadeTransition(Duration.millis(500), displayedAccountBox);
+        fadeOutAccountBox.setFromValue(1);
+        fadeOutAccountBox.setToValue(0);
 
         TranslateTransition translateTransition =
                 new TranslateTransition(Duration.millis(250), displayedAccountBox);
@@ -131,21 +131,17 @@ public class UserListController extends StackPane {
         scaleTransition.setToX(1f);
         scaleTransition.setToY(1f);
 
-        ScaleTransition scaleTransition1 =
-                new ScaleTransition(Duration.millis(250), pane);
-        scaleTransition1.setFromY(0);
-
-
         ParallelTransition parallelTransition = new ParallelTransition();
         parallelTransition.getChildren().addAll(
-                fadeTransition,
+                fadeInUserPane,
+                fadeOutAccountBox,
                 translateTransition,
                 scaleTransition
         );
 
         parallelTransition.setOnFinished(event -> {
-            pane.getChildren().remove(displayedAccountBox);
-            anchorPane.setVisible(false);
+            loginAccountPane.getChildren().remove(displayedAccountBox);
+            loginAnchorPane.setVisible(false);
         });
 
         parallelTransition.play();

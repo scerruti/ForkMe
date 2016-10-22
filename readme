@@ -1,0 +1,14 @@
+This project is intended for student use by Wintriss Technical Schools. It is a
+simplified desktop interface for GitHub that permits students to easily clone
+their repositories to the desktop.
+
+Future versions will manage student repositories ensuring changes are pushed and
+removing repositories when the student logs out. It is also intended that this
+tool will be able to automatically load cloned repositories into IDEs.
+
+It is envisioned that this tool will eventually allow students to easily fork and
+clone school repositories for their own use.
+
+Accounts are stored without passwords using the Java preference mechanism. To clear
+preferences on Unix like systems, check ~/.java/.user_prefs. Avatar images are also
+cached.

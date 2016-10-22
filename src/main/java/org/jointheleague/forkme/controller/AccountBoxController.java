@@ -6,6 +6,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.image.Image;
@@ -85,16 +86,17 @@ public class AccountBoxController {
 
     @FXML
     private void loginAction(ActionEvent actionEvent) {
-        loginButton.getScene().setCursor(Cursor.WAIT); //Change cursor to wait style
+        final Scene scene = loginButton.getScene();
+        scene.setCursor(Cursor.WAIT); //Change cursor to wait style
         errorMessage.setText("");
 
         LoginService service = new LoginService(user.getLogin(), passwordField.getText());
         service.setOnSucceeded(event -> {
             userListController.hideAccountLogin();
-            loginButton.getScene().setCursor(Cursor.DEFAULT); //Change cursor to default style
+            scene.setCursor(Cursor.DEFAULT); //Change cursor to default style
         });
         service.setOnFailed(event -> {
-            loginButton.getScene().setCursor(Cursor.DEFAULT); //Change cursor to default style
+            scene.setCursor(Cursor.DEFAULT); //Change cursor to default style
             Exception e = (Exception) event.getSource().exceptionProperty().get();
 
             if (e instanceof RequestException) {
@@ -157,5 +159,9 @@ public class AccountBoxController {
 
     public void hideActionControls() {
         this.actionPane.setVisible(false);
+    }
+
+    public VBox getButtonPane() {
+        return loginPane;
     }
 }

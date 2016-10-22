@@ -8,15 +8,19 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.RepositoryService;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.jointheleague.forkme.ForkMe;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Created by league on 10/17/16.
+/*
+ * Copyright 2016, The League of Amazing Programmers, All Rights Reserved
  */
 public class Repo {
     private RepoService repoLoader;
@@ -31,14 +35,11 @@ public class Repo {
         ForkMe.currentAccount.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 currentLogin = newValue.getLogin();
+                System.out.println(currentLogin);
 
                 repoLoader = new RepoService(ForkMe.getCurrentAccount().getClient());
-                repoLoader.setOnFailed(event -> {
-                    event.getSource().getException().printStackTrace();
-                });
-                repoLoader.setOnSucceeded(event -> {
-                    buildMaps((Collection<Repository>) event.getSource().getValue());
-                });
+                repoLoader.setOnFailed(event -> event.getSource().getException().printStackTrace());
+                repoLoader.setOnSucceeded(event -> buildMaps((Collection<Repository>) event.getSource().getValue()));
 
                 repoLoader.start();
             }
@@ -77,7 +78,7 @@ public class Repo {
 
     }
 
-    private void dumpRepositories() {
+    public void dumpRepositories() {
         for (String name : getMyRepositories().keySet()) {
             System.out.println(name);
         }
@@ -104,9 +105,28 @@ public class Repo {
         return myRepositoriesObservable;
     }
 
+    public Repository getRepository(String name) {
+        return myRepositories.get(name);
+    }
+
+    public void clone(String repoName) {
+        Repository myRepo = myRepositories.get(repoName);
+        String url = myRepo.getCloneUrl();
+
+        File desktop = Paths.get(System.getProperty("user.home"), "Desktop", repoName).toFile();
+        try {
+            Git.cloneRepository()
+                    .setURI(url)
+                    .setDirectory(desktop)
+                    .call();
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+        }
+    }
+
     private class RepoService extends Service<Collection<Repository>> {
 
-        public RepoService(GitHubClient client) {
+        RepoService(GitHubClient client) {
             repoService = new RepositoryService(client);
         }
 

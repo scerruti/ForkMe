@@ -5,6 +5,7 @@ package org.jointheleague.forkme.controller;/*
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -54,15 +55,20 @@ public class ForkMeController {
 
     @FXML
     private void login(ActionEvent actionEvent) {
-        loginButton.getScene().setCursor(Cursor.WAIT); //Change cursor to wait style
+        final Scene scene = loginButton.getScene();
+
+        scene.setCursor(Cursor.WAIT); //Change cursor to wait style
         loginError.setText("");
 
-        LoginService service = new LoginService(username.getText(), password.getText());
+        LoginService service = new LoginService(username.getText().toLowerCase(), password.getText());
         service.setOnSucceeded(event -> {
-            loginButton.getScene().setCursor(Cursor.DEFAULT); //Change cursor to default style
+            password.clear();
+            scene.setCursor(Cursor.DEFAULT); //Change cursor to default style
         });
         service.setOnFailed(event -> {
-            loginButton.getScene().setCursor(Cursor.DEFAULT); //Change cursor to default style
+            password.selectAll();
+            password.requestFocus();
+            scene.setCursor(Cursor.DEFAULT); //Change cursor to default style
             Exception e = (Exception) event.getSource().exceptionProperty().get();
 
             if (e instanceof RequestException) {
@@ -81,7 +87,7 @@ public class ForkMeController {
         service.start();
     }
 
-    public void promptForLogin() {
+    void promptForLogin() {
         loginPrompt.setVisible(true);
         currentAccountBox.setDisable(true);
         currentAccountBox.hideActionControls();

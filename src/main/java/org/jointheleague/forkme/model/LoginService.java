@@ -24,8 +24,7 @@ public class LoginService extends Service<Void> {
 
                 Account account = new Account(login, text);
                 account.login();
-                ForkMe.setCurrentUser(PersistentUser.getAccount(login));
-                ForkMe.setCurrentUser(account);
+                ForkMe.setCurrentAccount(account);
                 return null;
             }
         };

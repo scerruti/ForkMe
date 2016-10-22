@@ -41,12 +41,7 @@ public class ForkMe extends Application {
 
     public static void main(String[] args) {
         JsonUser.loadAccounts();
-
         launch(args);
-    }
-
-    public static void setCurrentUser(PersistentUser currentUser) {
-        ForkMe.currentUser.setValue(currentUser);
     }
 
     public static ResourceBundle getResources() {
@@ -58,12 +53,13 @@ public class ForkMe extends Application {
         currentAccount.setValue(null);
     }
 
-    public static void setCurrentUser(Account account) {
-        ForkMe.currentAccount.setValue(account);
-    }
-
     public static Account getCurrentAccount() {
         return currentAccount.get();
+    }
+
+    public static void setCurrentAccount(Account account) {
+        ForkMe.currentAccount.setValue(account);
+        ForkMe.currentUser.setValue(PersistentUser.getAccount(account.getLogin()));
     }
 
     public static void show(Pane pane) {

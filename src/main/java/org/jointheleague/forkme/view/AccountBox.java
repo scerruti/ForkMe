@@ -4,6 +4,7 @@ package org.jointheleague.forkme.view;/*
 
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.jointheleague.forkme.controller.AccountBoxController;
 import org.jointheleague.forkme.controller.ForkMeController;
@@ -64,5 +65,9 @@ public class AccountBox extends VBox {
 
     public void setMainController(ForkMeController forkMeController) {
         controller.setMainController(forkMeController);
+    }
+
+    public Pane getButtonPane() {
+        return controller.getButtonPane();
     }
 }

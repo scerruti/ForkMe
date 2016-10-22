@@ -2,10 +2,6 @@ package org.jointheleague.forkme.model;/*
  * Copyright 2016, The League of Amazing Programmers, All Rights Reserved
  */
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.UserService;
@@ -24,7 +20,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.FileTime;
-import java.util.Calendar;
 
 public class Account {
     private static final Logger logger = LoggerFactory.getLogger(Account.class);
@@ -35,7 +30,7 @@ public class Account {
     private GitHubClient client;
     private User user;
 
-    public Account(String username, String password) {
+    Account(String username, String password) {
         this.login = username;
         this.password = password;
     }
@@ -49,13 +44,14 @@ public class Account {
         login();
     }
 
-    public void login() throws IOException {
+    void login() throws IOException {
         //Basic authentication
         client = new GitHubClient();
         client.setCredentials(this.login, password);
 
         UserService userService = new UserService(client);
         user = userService.getUser();
+        this.login = user.getLogin();
 
         try {
             downloadAvatar(new URL(user.getAvatarUrl()));
@@ -99,7 +95,7 @@ public class Account {
         client = null;
     }
 
-    public void setPassword(String password) {
+    private void setPassword(String password) {
         this.password = password;
     }
 
@@ -108,11 +104,11 @@ public class Account {
         return login;
     }
 
-    public String getName() {
+    String getName() {
         return (user != null?user.getName():null);
     }
 
-    public URL getAvatarUrl() {
+    URL getAvatarUrl() {
         try {
             return (user != null?new URL(user.getAvatarUrl()):null);
         } catch (MalformedURLException e) {
@@ -121,7 +117,7 @@ public class Account {
         }
     }
 
-    public GitHubClient getClient() {
+    GitHubClient getClient() {
         return client;
     }
 }

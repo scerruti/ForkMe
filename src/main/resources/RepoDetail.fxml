@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+         minWidth="-Infinity" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/8.0.102-ea">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints/>
+    </rowConstraints>
+    <Label text="Name"/>
+    <TextField fx:id="repoName" editable="false" GridPane.columnIndex="1"/>
+    <Label text="Owner" GridPane.rowIndex="1"/>
+    <TextField fx:id="repoOwner" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <Label text="Description" GridPane.rowIndex="2"/>
+    <TextField fx:id="repoDescription" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <AnchorPane GridPane.columnSpan="2" GridPane.rowIndex="3">
+        <ScrollPane hbarPolicy="NEVER">
+            <TextArea fx:id="readMe"/>
+        </ScrollPane>
+    </AnchorPane>
+</fx:root>

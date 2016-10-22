@@ -5,41 +5,20 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.102-ea">
-    <children>
-        <SplitPane dividerPositions="0.29797979797979796" maxHeight="-Infinity" maxWidth="-Infinity"
-                   minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
-            <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                    <children>
-                        <VBox alignment="TOP_CENTER" prefHeight="398.0" prefWidth="174.0">
-                            <children>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="My Repositories"
-                                      textAlignment="CENTER"/>
-                                <ListView fx:id="repoList" prefHeight="200.0" prefWidth="200.0"/>
-                                <Button mnemonicParsing="false" text="Button" onAction="#printRepos"/>
-                            </children>
-                        </VBox>
-                    </children>
-                </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                    <children>
-                        <TabPane prefHeight="400.0" prefWidth="416.0" tabClosingPolicy="UNAVAILABLE">
-                            <tabs>
-                                <Tab text="Untitled Tab 1">
-                                    <content>
-                                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
-                                            <content>
-                                                <TextArea prefHeight="366.0" prefWidth="416.0"/>
-                                            </content>
-                                        </ScrollPane>
-                                    </content>
-                                </Tab>
-                                <Tab text="Untitled Tab 2"/>
-                            </tabs>
-                        </TabPane>
-                    </children>
-                </AnchorPane>
-            </items>
-        </SplitPane>
-    </children>
+    <SplitPane dividerPositions="0.29797979797979796" maxHeight="-Infinity" maxWidth="-Infinity"
+               minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+            <VBox alignment="TOP_CENTER" prefHeight="398.0" prefWidth="174.0">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="My Repositories"
+                      textAlignment="CENTER"/>
+                <ListView fx:id="repoList" prefHeight="200.0" prefWidth="200.0"/>
+                <Button mnemonicParsing="false" text="%clone.button.text" onAction="#cloneRepo"/>
+            </VBox>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+            <TabPane prefHeight="400.0" prefWidth="416.0" tabClosingPolicy="UNAVAILABLE">
+                <Tab text="%information.tab.title" fx:id="infoTab"/>
+            </TabPane>
+        </AnchorPane>
+    </SplitPane>
 </fx:root>
