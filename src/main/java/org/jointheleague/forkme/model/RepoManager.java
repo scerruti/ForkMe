@@ -1,59 +1,58 @@
 package org.jointheleague.forkme.model;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.Config;
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.jointheleague.forkme.ForkMe;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /*
  * Copyright 2016, The League of Amazing Programmers, All Rights Reserved
  */
-public class Repo {
-    private RepoService repoLoader;
+public class RepoManager {
+    private GitHubRepoService repoLoader;
     private String currentLogin;
     private RepositoryService repoService;
-    private Map<String, Repository> myRepositories = new TreeMap<>();
-    private ObservableMap<String, Repository> myRepositoriesObservable = FXCollections.observableMap(myRepositories);
-    private Map<String, Map<String, Repository>> userRepositories;
-    private Map<String, Map<String, Repository>> organizationRepositories;
+    private List<Repository> myRepositories = new ArrayList<>();
+    private ObservableList<Repository> myRepositoriesObservable = FXCollections.observableArrayList(myRepositories);
+    private Map<String, Map<String, org.eclipse.egit.github.core.Repository>> userRepositories;
+    private Map<String, Map<String, org.eclipse.egit.github.core.Repository>> organizationRepositories;
 
-    public Repo() {
+    public RepoManager() {
         ForkMe.currentAccount.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 currentLogin = newValue.getLogin();
                 System.out.println(currentLogin);
 
-                repoLoader = new RepoService(ForkMe.getCurrentAccount().getClient());
+                repoLoader = new GitHubRepoService(ForkMe.getCurrentAccount().getClient());
                 repoLoader.setOnFailed(event -> event.getSource().getException().printStackTrace());
-                repoLoader.setOnSucceeded(event -> buildMaps((Collection<Repository>) event.getSource().getValue()));
+                repoLoader.setOnSucceeded(event -> buildMaps((Collection<org.eclipse.egit.github.core.Repository>) event.getSource().getValue()));
 
                 repoLoader.start();
             }
         });
     }
 
-    private void buildMaps(Collection<Repository> repos) {
+    private void buildMaps(Collection<org.eclipse.egit.github.core.Repository> repos) {
         myRepositoriesObservable.clear();
 
-        for (Repository r : repos) {
+        for (org.eclipse.egit.github.core.Repository r : repos) {
             switch (r.getOwner().getType()) {
                 case User.TYPE_USER:
                     if (r.getOwner().getLogin().equals(currentLogin)) {
-                        myRepositoriesObservable.put(r.getName(), r);
+                        myRepositoriesObservable.add(new Repository(r));
                     } else {
                         if (userRepositories == null) {
                             userRepositories = new HashMap<>();
@@ -79,8 +78,8 @@ public class Repo {
     }
 
     public void dumpRepositories() {
-        for (String name : getMyRepositories().keySet()) {
-            System.out.println(name);
+        for (Repository r : myRepositories) {
+            System.out.println(r.getName());
         }
 
         System.out.println("\nUsers");
@@ -101,40 +100,64 @@ public class Repo {
 
     }
 
-    public ObservableMap<String, Repository> getMyRepositories() {
+    public ObservableList<Repository> getMyRepositories() {
         return myRepositoriesObservable;
     }
 
-    public Repository getRepository(String name) {
-        return myRepositories.get(name);
-    }
-
-    public void clone(String repoName) {
-        Repository myRepo = myRepositories.get(repoName);
+    public org.eclipse.jgit.lib.Repository clone(Repository myRepo) {
+        org.eclipse.jgit.lib.Repository repository = null;
         String url = myRepo.getCloneUrl();
 
-        File desktop = Paths.get(System.getProperty("user.home"), "Desktop", repoName).toFile();
+        File repoDir = Paths.get(System.getProperty("user.home"), "Desktop", myRepo.getName()).toFile();
+        boolean match = false;
+        while (repoDir.exists() && !match) {
+            FileRepositoryBuilder repositoryBuilder = new FileRepositoryBuilder();
+            repositoryBuilder.setMustExist(true);
+            repositoryBuilder.setGitDir(repoDir);
+            try {
+                repository = repositoryBuilder.build();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Config storedConfig = repository.getConfig();
+            Set<String> remotes = storedConfig.getSubsections("remote");
+
+            for (String remoteName : remotes) {
+                String remoteUrl = storedConfig.getString("remote", remoteName, "url");
+                if (url.equals(remoteUrl)) {
+                    match = true;
+                    break;
+                }
+            }
+
+            // Append owner name to repo
+            // Append numbers
+        }
+
+
         try {
             Git.cloneRepository()
                     .setURI(url)
-                    .setDirectory(desktop)
+                    .setDirectory(repoDir)
                     .call();
+
         } catch (GitAPIException e) {
             e.printStackTrace();
         }
+        return repository;
     }
 
-    private class RepoService extends Service<Collection<Repository>> {
+    private class GitHubRepoService extends Service<Collection<org.eclipse.egit.github.core.Repository>> {
 
-        RepoService(GitHubClient client) {
+        GitHubRepoService(GitHubClient client) {
             repoService = new RepositoryService(client);
         }
 
         @Override
-        protected Task<Collection<Repository>> createTask() {
-            return new Task<Collection<Repository>>() {
+        protected Task<Collection<org.eclipse.egit.github.core.Repository>> createTask() {
+            return new Task<Collection<org.eclipse.egit.github.core.Repository>>() {
                 @Override
-                protected Collection<Repository> call() throws Exception {
+                protected Collection<org.eclipse.egit.github.core.Repository> call() throws Exception {
                     return repoService.getRepositories();
                 }
             };

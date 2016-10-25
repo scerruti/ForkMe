@@ -5,8 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import org.eclipse.egit.github.core.Repository;
 import org.jointheleague.forkme.ForkMe;
+import org.jointheleague.forkme.model.Repository;
 
 import java.io.IOException;
 

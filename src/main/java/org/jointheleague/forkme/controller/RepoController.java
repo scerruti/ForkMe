@@ -1,17 +1,21 @@
 package org.jointheleague.forkme.controller;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
-import org.eclipse.egit.github.core.Repository;
 import org.jointheleague.forkme.ForkMe;
-import org.jointheleague.forkme.model.Repo;
+import org.jointheleague.forkme.model.RepoManager;
+import org.jointheleague.forkme.model.Repository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,14 +25,16 @@ import java.util.List;
  * Copyright 2016, The League of Amazing Programmers, All Rights Reserved
  */
 public class RepoController extends AnchorPane {
-    private final Repo repo;
+    private static final Logger logger = LoggerFactory.getLogger(RepoController.class);
+
+    private final RepoManager repoManager;
     public ListView repoList;
     public Tab infoTab;
-    private List<String> myRepoList = new ArrayList<>();
-    private ObservableList<String> myRepositoryList = FXCollections.observableList(myRepoList);
+    private List<Repository> myRepoList = new ArrayList<>();
+    private ObservableList<Repository> myRepositoryList = FXCollections.observableList(myRepoList);
 
-    public RepoController(Repo repo) {
-        this.repo = repo;
+    public RepoController(RepoManager repoManager) {
+        this.repoManager = repoManager;
 
         FXMLLoader fxmlLoader = new FXMLLoader(
                 getClass().getResource("/RepoView.fxml"),
@@ -51,24 +57,45 @@ public class RepoController extends AnchorPane {
 
     @FXML
     public void initialize() {
-        repo.getMyRepositories().addListener(new MapChangeListener<String, Repository>() {
+        repoManager.getMyRepositories().addListener(new ListChangeListener<Repository>() {
             @Override
-            public void onChanged(Change<? extends String, ? extends Repository> change) {
-                if (change.wasAdded()) {
-                    myRepositoryList.add(change.getKey());
-                } else if (change.wasRemoved()) {
-                    myRepositoryList.remove(change.getKey());
+            public void onChanged(Change<? extends Repository> change) {
+                while (change.next()) {
+                    if (change.wasPermutated()) {
+                        //permutate
+                    } else if (change.wasUpdated()) {
+                        //update item
+                    } else {
+                        for (Repository repository : change.getRemoved()) {
+                            myRepositoryList.remove(repository);
+                        }
+                        for (Repository repository : change.getAddedSubList()) {
+                            myRepositoryList.add(repository);
+                        }
+                    }
                 }
             }
         });
-        myRepoList.addAll(repo.getMyRepositories().keySet());
+        myRepoList.addAll(repoManager.getMyRepositories());
         repoList.setItems(myRepositoryList);
-        repoList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> infoTab.setContent(new RepoDetailController(repo.getRepository(newValue.toString()))));
+        repoList.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener<Repository>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Repository> observable, Repository oldValue, Repository newValue) {
+                        infoTab.setContent(
+                                new RepoDetailController(newValue));
+
+                    }
+                });
     }
 
     @FXML
     public void cloneRepo() {
-        String repoName = (String) repoList.getSelectionModel().getSelectedItem();
-        repo.clone(repoName);
+        Object selectedItem = repoList.getSelectionModel().getSelectedItem();
+        if (selectedItem instanceof Repository) {
+            ((Repository) selectedItem).clone(repoManager);
+        } else {
+            logger.error("Unknown item returned from selection {}", selectedItem);
+        }
     }
 }

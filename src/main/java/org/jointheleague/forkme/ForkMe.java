@@ -15,7 +15,7 @@ import org.jointheleague.forkme.controller.UserListController;
 import org.jointheleague.forkme.model.Account;
 import org.jointheleague.forkme.model.JsonUser;
 import org.jointheleague.forkme.model.PersistentUser;
-import org.jointheleague.forkme.model.Repo;
+import org.jointheleague.forkme.model.RepoManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ public class ForkMe extends Application {
     private List<Account> accounts;
     private ResourceBundle resources;
     private Stage primaryStage;
-    private Repo repo = new Repo();
+    private RepoManager repoManager = new RepoManager();
     private StackPane centerPane;
     private RepoController repoPane;
     private UserListController userPane;
@@ -81,7 +81,7 @@ public class ForkMe extends Application {
         }
 
         userPane = new UserListController(PersistentUser.accounts);
-        repoPane = new RepoController(repo);
+        repoPane = new RepoController(repoManager);
         mainWindow.setCenter(userPane);
 
         primaryStage.setOnCloseRequest(event -> Platform.exit());
