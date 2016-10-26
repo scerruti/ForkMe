@@ -29,10 +29,10 @@
     </build>
 
     <repositories>
-        <repository>
-            <id>egit</id>
-            <name>Eclipse egit</name>
-            <url>https://repoManager.eclipse.org/content/groups/releases/</url>
+       <repository>
+            <id>jgit</id>
+            <name>Eclipse jgit</name>
+            <url>https://repo.eclipse.org/content/groups/releases/</url>
         </repository>
     </repositories>
 
